@@ -1,6 +1,6 @@
 
 
-const parametroInicial = 296
+const parametroInicial = 1260
 
 function fatorar(parametro){
     /*
@@ -24,18 +24,26 @@ function fatorar(parametro){
     let dividendoAtual = parametro
     let divisorAtual = 2
 
+    const divisores = []
+    const dividendos = []
+
     while(dividendoAtual > 1){
         while(dividendoAtual % divisorAtual != 0){
             divisorAtual++
         }
-        console.log(dividendoAtual + " / " + divisorAtual)
+        divisores.push(divisorAtual)
+        dividendos.push(dividendoAtual)
         dividendoAtual = dividendoAtual / divisorAtual
     }
+
+    return {
+        divisores: divisores,
+        dividendos: dividendos,
+    }
 }
-fatorar(parametroInicial)
+const fatorarObj = fatorar(parametroInicial)
 
 
-const teste = [2, 2, 2, 37]
 function separarPares(parametro){
     /*
     1260 / 2
@@ -60,9 +68,28 @@ function separarPares(parametro){
         }
     }
 
-    console.log(numeros)
-    console.log(numerosForaDaRaiz)
-    console.log(numerosDentroDaRaiz)
+    return {
+        numerosForaDaRaiz: numerosForaDaRaiz,
+        numerosDentroDaRaiz: numerosDentroDaRaiz,
+    }
 }
-// separarPares(teste)
+const separarParesObj = separarPares(fatorarObj.divisores)
 
+function resultadoFinal(parametro){
+    let numeroForaDaRaiz = 1
+    let numeroDentroDaRaiz = 1
+
+    for(const num of parametro.numerosForaDaRaiz){
+        numeroForaDaRaiz *= num
+    }
+    for(const num of parametro.numerosDentroDaRaiz){
+        numeroDentroDaRaiz *= num
+    }
+
+    return {
+        numeroForaDaRaiz: numeroForaDaRaiz,
+        numeroDentroDaRaiz: numeroDentroDaRaiz,
+        resultadoStr: numeroForaDaRaiz+"√"+numeroDentroDaRaiz
+    }
+}
+const resultadoFinalObj = resultadoFinal(separarParesObj)
