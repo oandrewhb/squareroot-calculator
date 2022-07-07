@@ -1,0 +1,35 @@
+:root{
+    --color1: #020E17;
+    --color2: #0E5159;
+    --color3: #09736A;
+    --color4: #15AB89;
+    --color5: #76D9B9;
+
+    --text-color: white;
+}
+
+body {
+    background-color: var(--color4);
+}
+
+input {
+    max-width: 200px;
+    border: 2px solid #aaaaaa;
+    background-color: transparent;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 30px;
+}
+input:hover, input:focus{
+    border-color: var(--color4);
+}
+
+.screen {
+    background-color: white;
+    border-radius: 25px;
+    border-color: transparent;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px 40px;
+}
