@@ -19,8 +19,8 @@
         <div class="screen">
             <label for="paramInicial" class="label-paramInicial">Calcular raiz quadrada de:</label>
             <div class="input-group">
-                <input type="number" class="form-control" aria-describedby="butn-calcular" id="paramInicial" name="paramInicial">
-                <button class="btn btn-outline-secondary" type="button" id="btn-calcular" onclick="btnCalcular()" data-bs-toggle="modal" data-bs-target="#squareRootModal">Calcular</button>
+                <input type="number" class="form-control" aria-describedby="btn-calcular" id="paramInicial" name="paramInicial">
+                <button class="btn btn-outline-secondary btn-theme" type="button" id="btn-calcular" onclick="btnCalcular()" data-bs-toggle="modal" data-bs-target="#squareRootModal">Calcular</button>
             </div>
         </div>
     </div>
@@ -29,31 +29,35 @@
     <div class="modal fade" id="squareRootModal" tabindex="-1" aria-labelledby="squareRootModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header no-border">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body squareroot-space" id="squareroot-space" style="margin: auto;">
                     
-                    
+                    ...
 
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Voltar</button>
+                <div class="modal-footer no-border">
+                    <button type="button" class="btn btn-primary btn-theme" data-bs-dismiss="modal">Voltar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const isInteger = (param) => !isNaN(param.replace('.', 'a')) && param.trim().length > 0
+        const isInteger = (param) => !isNaN(param.replace('.', 'a')) && !isNaN(param.replace(',', 'a'))
         const isNegative = (param) => param.replace('-', '') != param
 
         function btnCalcular(){
             const parametroTeste = null;
             const inputParamInicial = document.querySelector('#paramInicial')
+
+            while (inputParamInicial.value[0] == "0") {
+                inputParamInicial.value = inputParamInicial.value.slice(1)
+            }
+
             if(inputParamInicial.value == ""){inputParamInicial.value = 0}
             let parametroInicial = parametroTeste == null ? inputParamInicial.value : parametroTeste+""
-            console.log(parametroInicial)
             const casoI = isNegative(parametroInicial)
             const getI = (short=false) => {
                 if(short){
@@ -63,13 +67,10 @@
                 }
             }
 
+            let squarerootContent = ""
             if(isInteger(parametroInicial)){
                 
-                
                 const squarerootResult = squarerootCalculator(parametroInicial.replace('-', ''))
-                console.log(squarerootResult)
-                let squarerootContent = ""
-
                 if(squarerootResult.raizJaSimplificada){
 
                     if(isNegative(parametroInicial)){
@@ -110,12 +111,23 @@
 
                     // Fatoração
                     squarerootContent += '<div class="fatoracao-table"><table>'
+                    let par = ''
                     squarerootResult.fatoracao.dividendos.map((num, index) => {
-                        squarerootContent += '<tr><td class="dividendo">'+squarerootResult.fatoracao.dividendos[index]+'</td><td class="divisor">'+squarerootResult.fatoracao.divisores[index]+'</td></tr>'
+                        const arr = squarerootResult.fatoracao.divisores
+                        if(par == 'up'){
+                            par = 'down'
+                        } else {
+                            if(arr[index] == arr[index+1]){
+                                par = 'up'
+                            } else {
+                                par = ''
+                            }
+                        }
+
+                        squarerootContent += '<tr><td class="dividendo">'+squarerootResult.fatoracao.dividendos[index]+'</td><td class="divisor '+par+'">'+squarerootResult.fatoracao.divisores[index]+'</td></tr>'
                     })
                     squarerootContent += '<tr><td class="dividendo">1</td><td class="divisor"></td></tr>'
                     squarerootContent += '</table></div>'
-
 
                     // Separa os pares da fatoração em potências de 2
                     squarerootContent += "<p>√("
@@ -160,11 +172,12 @@
                     }
                 }
 
-                document.querySelector('#squareroot-space').innerHTML = squarerootContent
-
+                
+                console.log(squarerootResult)
             } else {
-                console.log("isn't Integer")
+                squarerootContent += '<p class="aviso">Insira somente valores inteiros</p>'
             }
+            document.querySelector('#squareroot-space').innerHTML = squarerootContent
         }
     </script>
 

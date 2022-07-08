@@ -7,6 +7,7 @@
 
     --text-color: white;
     --gray: rgb(222, 222, 222);
+    --gray-dark: rgb(190, 190, 190);
 }
 
 body {
@@ -35,7 +36,7 @@ input:hover, input:focus{
 }
 
 .screen {
-    background-color: white;
+    background-color: var(--text-color);
     border-radius: 25px;
     border-color: transparent;
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.4);    
@@ -63,6 +64,14 @@ label.label-paramInicial {
 .fatoracao-table td.divisor {
     padding: 0px 10px;
 }
+.fatoracao-table td.divisor.up {
+    background-color: var(--gray-dark);
+    border-top: 2px solid var(--gray);
+}
+.fatoracao-table td.divisor.down {
+    background-color: var(--gray-dark);
+    border-bottom: 2px solid var(--gray);
+}
 
 div.squareroot-space p {
     background-color: var(--gray);
@@ -76,4 +85,26 @@ div.squareroot-space p.aviso {
     font-size: 20px;
     padding: 0px;
     margin: 0px;
+}
+
+.btn-theme {
+    border-color: var(--color2);
+    color: var(--color2);
+}
+.btn-theme:hover{
+    background-color: var(--color3);
+}
+
+.modal-footer button.btn-theme{
+    border-color: var(--color2);
+    color: var(--text-color);
+    background-color: var(--color3);
+}
+.modal-footer button.btn-theme:hover{
+    background-color: var(--color2);
+    color: var(--text-color);
+}
+
+.no-border {
+    border: 0px solid transparent;
 }
