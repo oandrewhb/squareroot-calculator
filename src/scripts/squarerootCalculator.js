@@ -1,7 +1,5 @@
 
 
-const parametroInicial = 1260
-
 function fatorar(parametro){
     /*
     1 x 3
@@ -41,8 +39,6 @@ function fatorar(parametro){
         dividendos: dividendos,
     }
 }
-const fatorarObj = fatorar(parametroInicial)
-
 
 function separarPares(parametro){
     /*
@@ -73,23 +69,63 @@ function separarPares(parametro){
         numerosDentroDaRaiz: numerosDentroDaRaiz,
     }
 }
-const separarParesObj = separarPares(fatorarObj.divisores)
 
 function resultadoFinal(parametro){
     let numeroForaDaRaiz = 1
     let numeroDentroDaRaiz = 1
 
     for(const num of parametro.numerosForaDaRaiz){
-        numeroForaDaRaiz *= num
+        numeroForaDaRaiz = numeroForaDaRaiz * num
     }
     for(const num of parametro.numerosDentroDaRaiz){
-        numeroDentroDaRaiz *= num
+        numeroDentroDaRaiz = numeroDentroDaRaiz * num
     }
 
     return {
         numeroForaDaRaiz: numeroForaDaRaiz,
         numeroDentroDaRaiz: numeroDentroDaRaiz,
-        resultadoStr: numeroForaDaRaiz+"√"+numeroDentroDaRaiz
+        resultadoStr: numeroForaDaRaiz == 1 ? "√"+numeroDentroDaRaiz : numeroDentroDaRaiz == 1 ? numeroForaDaRaiz : numeroForaDaRaiz+"√"+numeroDentroDaRaiz
     }
 }
-const resultadoFinalObj = resultadoFinal(separarParesObj)
+
+function squarerootCalculator(parametroInicial, log=false){
+
+    const consoleLog = (param) => {if(log){console.log(param)}}
+
+    const fatorarObj = fatorar(parametroInicial)
+    consoleLog("fatorarObj:")
+    consoleLog(fatorarObj)
+
+    const separarParesObj = separarPares(fatorarObj.divisores)
+    consoleLog("separarParesObj:")
+    consoleLog(separarParesObj)
+
+    const resultadoFinalObj = resultadoFinal(separarParesObj)
+    consoleLog("resultadoFinalObj:")
+    consoleLog(resultadoFinalObj)
+
+    consoleLog("-----")
+
+
+
+    if(parametroInicial <= 1){
+        return parametroInicial
+    } else {
+        return {
+            fatoracao: fatorarObj,
+            numerosDentroDaRaiz: separarParesObj.numerosDentroDaRaiz,
+            numerosForaDaRaiz: separarParesObj.numerosForaDaRaiz,
+            resultadoFinal: resultadoFinalObj,
+            resultadoFinalStr: resultadoFinalObj.resultadoStr,
+            raizJaSimplificada: resultadoFinalObj.numeroDentroDaRaiz == parametroInicial
+        }
+    }
+
+}
+
+// console.log(squarerootCalculator(1000))
+
+for (let i = 0; i <= 1000; i++){
+    console.log(i + " = " + squarerootCalculator(i).resultadoFinalStr + " - " + squarerootCalculator(i).raizJaSimplificada)
+    // console.log(squarerootCalculator(i).resultadoFinalStr)
+}
