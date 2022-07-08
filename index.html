@@ -15,18 +15,105 @@
 </head>
 <body>
 
-    <div class="container screen">
-        <div class="row">
-            <div class="col">
-                <label for="main-input">Número</label>
-                <br>
-                <input type="nnumber" id="main-input" name="main-input" class="main-input">
-                <br>
-                <button type="button" id="">Calcular</button>
-                <button type="button" id="">Calcular</button>
+    <div class="base">
+        <div class="screen">
+            <label for="paramInicial" class="label-paramInicial">Calcular raiz quadrada de:</label>
+            <div class="input-group">
+                <input type="number" class="form-control" aria-describedby="butn-calcular" id="paramInicial" name="paramInicial">
+                <button class="btn btn-outline-secondary" type="button" id="btn-calcular" onclick="btnCalcular()" data-bs-toggle="modal" data-bs-target="#squareRootModal">Calcular</button>
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="squareRootModal" tabindex="-1" aria-labelledby="squareRootModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body squareroot" style="margin: auto;">
+                    
+                    <p>
+                        √(-216)
+                    </p>
+
+                    <!-- Caso I -->
+                    <!-- <p>
+                        √(216×(-1))
+                    </p>
+                    <p>
+                        √(216) × √(-1)
+                    </p>
+                    <p>
+                        √(216) × i
+                    </p> -->
+                    <!-- // Caso I -->
+
+                    <div class="fatoracao-table">
+                        <table>
+                            <tr>
+                                <td class="dividendo">216</td>
+                                <td class="divisor">2</td>
+                            </tr>
+                            <tr>
+                                <td class="dividendo">108</td>
+                                <td class="divisor">2</td>
+                            </tr>
+                            <tr>
+                                <td class="dividendo">54</td>
+                                <td class="divisor">2</td>
+                            </tr>
+                            <tr>
+                                <td class="dividendo">27</td>
+                                <td class="divisor">3</td>
+                            </tr>
+                            <tr>
+                                <td class="dividendo">9</td>
+                                <td class="divisor">3</td>
+                            </tr>
+                            <tr>
+                                <td class="dividendo">3</td>
+                                <td class="divisor">3</td>
+                            </tr>
+                            <tr>
+                                <td class="dividendo">1</td>
+                                <td class="divisor"></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <p>
+                        √(2² × 3² × 2 × 3) × i
+                    </p>
+                    <p>
+                        2 × 3 × √(2 × 3) × i
+                    </p>
+                    <p>
+                        6√(6)i
+                    </p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Voltar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const isInteger = (param) => !isNaN(param.replace('.', 'a')) && param.trim().length > 0
+
+        function btnCalcular(){
+            const parametroInicial = document.querySelector('#paramInicial').value
+            console.log(parametroInicial)
+            if(isInteger(parametroInicial)){
+                console.log("is Integer")
+            } else {
+                console.log("isn't Integer")
+            }
+        }
+    </script>
 
     <script src="scripts/squarerootCalculator.js"></script>
 </body>
