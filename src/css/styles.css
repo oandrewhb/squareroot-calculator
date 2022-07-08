@@ -64,9 +64,16 @@ label.label-paramInicial {
     padding: 0px 10px;
 }
 
-div.modal-body.squareroot p {
+div.squareroot-space p {
     background-color: var(--gray);
     margin-top: 15px;
     text-align: center;
     padding: 3px 10px;
+}
+
+div.squareroot-space p.aviso {
+    background-color: transparent;
+    font-size: 20px;
+    padding: 0px;
+    margin: 0px;
 }

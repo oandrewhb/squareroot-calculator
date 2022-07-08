@@ -32,66 +32,9 @@
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body squareroot" style="margin: auto;">
+                <div class="modal-body squareroot-space" id="squareroot-space" style="margin: auto;">
                     
-                    <p>
-                        √(-216)
-                    </p>
-
-                    <!-- Caso I -->
-                    <!-- <p>
-                        √(216×(-1))
-                    </p>
-                    <p>
-                        √(216) × √(-1)
-                    </p>
-                    <p>
-                        √(216) × i
-                    </p> -->
-                    <!-- // Caso I -->
-
-                    <div class="fatoracao-table">
-                        <table>
-                            <tr>
-                                <td class="dividendo">216</td>
-                                <td class="divisor">2</td>
-                            </tr>
-                            <tr>
-                                <td class="dividendo">108</td>
-                                <td class="divisor">2</td>
-                            </tr>
-                            <tr>
-                                <td class="dividendo">54</td>
-                                <td class="divisor">2</td>
-                            </tr>
-                            <tr>
-                                <td class="dividendo">27</td>
-                                <td class="divisor">3</td>
-                            </tr>
-                            <tr>
-                                <td class="dividendo">9</td>
-                                <td class="divisor">3</td>
-                            </tr>
-                            <tr>
-                                <td class="dividendo">3</td>
-                                <td class="divisor">3</td>
-                            </tr>
-                            <tr>
-                                <td class="dividendo">1</td>
-                                <td class="divisor"></td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <p>
-                        √(2² × 3² × 2 × 3) × i
-                    </p>
-                    <p>
-                        2 × 3 × √(2 × 3) × i
-                    </p>
-                    <p>
-                        6√(6)i
-                    </p>
+                    
 
                 </div>
                 <div class="modal-footer">
@@ -105,16 +48,83 @@
         const isInteger = (param) => !isNaN(param.replace('.', 'a')) && param.trim().length > 0
 
         function btnCalcular(){
-            const parametroInicial = document.querySelector('#paramInicial').value
+            let parametroInicial = "36" //document.querySelector('#paramInicial').value
             console.log(parametroInicial)
+
             if(isInteger(parametroInicial)){
-                console.log("is Integer")
+                
+                
+                const squarerootResult = squarerootCalculator(parametroInicial)
+                console.log(squarerootResult)
+                let squarerootContent = ""
+
+                if(squarerootResult.raizJaSimplificada){
+
+                    squarerootContent += '<p class="aviso">Essa raiz já está simplificada</p>'
+                    squarerootContent += '<p>√'+parametroInicial+' = '+squarerootResult.valorDecimalStr+'</p>'
+
+                } else {
+                    // Inicio
+                    squarerootContent += '<p>√('+parametroInicial+')</p>'
+
+                    // Fatoração
+                    squarerootContent += '<div class="fatoracao-table"><table>'
+                    squarerootResult.fatoracao.dividendos.map((num, index) => {
+                        squarerootContent += '<tr><td class="dividendo">'+squarerootResult.fatoracao.dividendos[index]+'</td><td class="divisor">'+squarerootResult.fatoracao.divisores[index]+'</td></tr>'
+                    })
+                    squarerootContent += '</table></div>'
+
+
+                    // separa os pares da fatoração em potências de 2
+                    squarerootContent += "<p>√("
+                    for(const num in squarerootResult.numerosForaDaRaiz){
+                        squarerootContent += squarerootResult.numerosForaDaRaiz[num]+"²"
+                        if(num < squarerootResult.numerosForaDaRaiz.length-1){
+                            squarerootContent += " × "
+                        }
+                    }
+                    if(squarerootResult.numerosDentroDaRaiz.length > 0) squarerootContent += " × "
+                    for(const num in squarerootResult.numerosDentroDaRaiz){
+                        squarerootContent += squarerootResult.numerosDentroDaRaiz[num]
+                        if(num < squarerootResult.numerosDentroDaRaiz.length-1){
+                            squarerootContent += " × "
+                        }
+                    }
+                    squarerootContent += ")"
+
+                    // Tira as potencias de dentro da raiz
+                    squarerootContent += "<p>"
+                    for(const num in squarerootResult.numerosForaDaRaiz){
+                        squarerootContent += squarerootResult.numerosForaDaRaiz[num]
+                        if(num < squarerootResult.numerosForaDaRaiz.length-1){
+                            squarerootContent += " × "
+                        }
+                    }
+                    if(squarerootResult.numerosDentroDaRaiz.length > 0){
+                        squarerootContent += " × √("
+                        for(const num in squarerootResult.numerosDentroDaRaiz){
+                            squarerootContent += squarerootResult.numerosDentroDaRaiz[num]
+                            if(num < squarerootResult.numerosDentroDaRaiz.length-1){
+                                squarerootContent += " × "
+                            }
+                        }
+                        squarerootContent += ")"
+                    }
+
+                    // Efetua as multiplicações
+                    if(squarerootResult.numerosForaDaRaiz.length + squarerootResult.numerosDentroDaRaiz.length > 1){
+                        squarerootContent += "<p>"+squarerootResult.resultadoFinalStr+"</p>"
+                    }
+                }
+
+                document.querySelector('#squareroot-space').innerHTML = squarerootContent
+
             } else {
                 console.log("isn't Integer")
             }
         }
     </script>
 
-    <script src="scripts/squarerootCalculator.js"></script>
+    <script src="src/scripts/squarerootCalculator.js"></script>
 </body>
 </html>
