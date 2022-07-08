@@ -112,8 +112,8 @@ function squarerootCalculator(parametroInicial, log=false){
         return {
             raizJaSimplificada: true,
             resultadoFinalStr: parametroInicial,
-            valorDecimal: 0,
-            valorDecimalStr: 0,
+            valorDecimal: parametroInicial,
+            valorDecimalStr: parametroInicial+"",
         }
     } else {
         return {
