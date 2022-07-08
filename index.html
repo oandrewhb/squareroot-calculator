@@ -46,36 +46,78 @@
 
     <script>
         const isInteger = (param) => !isNaN(param.replace('.', 'a')) && param.trim().length > 0
+        const isNegative = (param) => param.replace('-', '') != param
 
         function btnCalcular(){
-            let parametroInicial = "36" //document.querySelector('#paramInicial').value
+            const parametroTeste = null;
+            const inputParamInicial = document.querySelector('#paramInicial')
+            if(inputParamInicial.value == ""){inputParamInicial.value = 0}
+            let parametroInicial = parametroTeste == null ? inputParamInicial.value : parametroTeste+""
             console.log(parametroInicial)
+            const casoI = isNegative(parametroInicial)
+            const getI = (short=false) => {
+                if(short){
+                    return casoI ? "i" : ""
+                } else {
+                    return casoI ? " × i" : ""
+                }
+            }
 
             if(isInteger(parametroInicial)){
                 
                 
-                const squarerootResult = squarerootCalculator(parametroInicial)
+                const squarerootResult = squarerootCalculator(parametroInicial.replace('-', ''))
                 console.log(squarerootResult)
                 let squarerootContent = ""
 
                 if(squarerootResult.raizJaSimplificada){
 
-                    squarerootContent += '<p class="aviso">Essa raiz já está simplificada</p>'
-                    squarerootContent += '<p>√'+parametroInicial+' = '+squarerootResult.valorDecimalStr+'</p>'
+                    if(isNegative(parametroInicial)){
+
+                        if(parametroInicial == "-1"){
+                            squarerootContent += "<p>√("+parametroInicial+") = i</p>"
+                        } else {
+                            squarerootContent += "<p>√("+parametroInicial+")</p>"
+                            parametroInicial = parametroInicial.replace('-', '')
+                            squarerootContent += "<p>√("+parametroInicial+" × (-1))</p>"
+                            squarerootContent += "<p>√("+parametroInicial+") × √(-1)</p>"
+                            squarerootContent += "<p>√("+parametroInicial+")i</p>"
+                        }
+
+                    } else {
+                        squarerootContent += '<p class="aviso">Essa raiz já está simplificada</p>'
+                        squarerootContent += '<p>√'+parametroInicial+' = '+squarerootResult.valorDecimalStr+'</p>'
+                    }
 
                 } else {
+
+
                     // Inicio
                     squarerootContent += '<p>√('+parametroInicial+')</p>'
+
+                    // Caso I
+                    if(isNegative(parametroInicial)){
+                        // Separa o negativo do parametro inicial
+                        parametroInicial = parametroInicial.replace('-', '')
+                        squarerootContent += "<p>√("+parametroInicial+" × (-1))</p>"
+
+                        // Separa as raizes
+                        squarerootContent += "<p>√("+parametroInicial+") × √(-1)</p>"
+
+                        // Substitui √(-1) por I
+                        squarerootContent += "<p>√("+parametroInicial+") × i</p>"
+                    }
 
                     // Fatoração
                     squarerootContent += '<div class="fatoracao-table"><table>'
                     squarerootResult.fatoracao.dividendos.map((num, index) => {
                         squarerootContent += '<tr><td class="dividendo">'+squarerootResult.fatoracao.dividendos[index]+'</td><td class="divisor">'+squarerootResult.fatoracao.divisores[index]+'</td></tr>'
                     })
+                    squarerootContent += '<tr><td class="dividendo">1</td><td class="divisor"></td></tr>'
                     squarerootContent += '</table></div>'
 
 
-                    // separa os pares da fatoração em potências de 2
+                    // Separa os pares da fatoração em potências de 2
                     squarerootContent += "<p>√("
                     for(const num in squarerootResult.numerosForaDaRaiz){
                         squarerootContent += squarerootResult.numerosForaDaRaiz[num]+"²"
@@ -90,7 +132,7 @@
                             squarerootContent += " × "
                         }
                     }
-                    squarerootContent += ")"
+                    squarerootContent += ")" + getI()
 
                     // Tira as potencias de dentro da raiz
                     squarerootContent += "<p>"
@@ -110,10 +152,11 @@
                         }
                         squarerootContent += ")"
                     }
+                    squarerootContent += getI(squarerootResult.numerosForaDaRaiz.length + squarerootResult.numerosDentroDaRaiz.length == 1)
 
                     // Efetua as multiplicações
                     if(squarerootResult.numerosForaDaRaiz.length + squarerootResult.numerosDentroDaRaiz.length > 1){
-                        squarerootContent += "<p>"+squarerootResult.resultadoFinalStr+"</p>"
+                        squarerootContent += "<p>"+squarerootResult.resultadoFinalStr+getI(true)+"</p>"
                     }
                 }
 

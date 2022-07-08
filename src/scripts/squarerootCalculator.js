@@ -84,7 +84,7 @@ function resultadoFinal(parametro){
     return {
         numeroForaDaRaiz: numeroForaDaRaiz,
         numeroDentroDaRaiz: numeroDentroDaRaiz,
-        resultadoStr: numeroDentroDaRaiz == 1 && numeroForaDaRaiz == 1 ? "1" : numeroForaDaRaiz == 1 ? "√"+numeroDentroDaRaiz : numeroDentroDaRaiz == 1 ? numeroForaDaRaiz : numeroForaDaRaiz+"√"+numeroDentroDaRaiz
+        resultadoStr: numeroDentroDaRaiz == 1 && numeroForaDaRaiz == 1 ? "1" : numeroForaDaRaiz == 1 ? "√("+numeroDentroDaRaiz+")" : numeroDentroDaRaiz == 1 ? numeroForaDaRaiz : numeroForaDaRaiz+"√("+numeroDentroDaRaiz+")"
     }
 }
 
@@ -109,7 +109,12 @@ function squarerootCalculator(parametroInicial, log=false){
 
 
     if(parametroInicial == 0 || parametroInicial == 1){
-        return parametroInicial
+        return {
+            raizJaSimplificada: true,
+            resultadoFinalStr: parametroInicial,
+            valorDecimal: 0,
+            valorDecimalStr: 0,
+        }
     } else {
         return {
             fatoracao: fatorarObj,
@@ -119,15 +124,8 @@ function squarerootCalculator(parametroInicial, log=false){
             resultadoFinalStr: resultadoFinalObj.resultadoStr,
             raizJaSimplificada: resultadoFinalObj.numeroDentroDaRaiz == parametroInicial,
             valorDecimal: Math.sqrt(parametroInicial),
-            valorDecimalStr: Math.sqrt(parametroInicial)+"".replace('.', ','),
+            valorDecimalStr: Math.sqrt(parametroInicial).toString().replace('.', ','),
         }
     }
 
 }
-
-// console.log(squarerootCalculator(140))
-
-// for (let i = 0; i <= 1000; i++){
-//     console.log(i + " = " + squarerootCalculator(i).resultadoFinalStr + " - " + squarerootCalculator(i).raizJaSimplificada)
-//     // console.log(squarerootCalculator(i).resultadoFinalStr)
-// }
