@@ -34,7 +34,7 @@
                 </div>
                 <div class="modal-body squareroot-space" id="squareroot-space" style="margin: auto;">
                     
-                    ...
+                    Erro ao calcular raiz quadrada
 
                 </div>
                 <div class="modal-footer no-border">
@@ -58,6 +58,7 @@
 
             if(inputParamInicial.value == ""){inputParamInicial.value = 0}
             let parametroInicial = parametroTeste == null ? inputParamInicial.value : parametroTeste+""
+            parametroInicial = parametroInicial == "-0" ? "0" :parametroInicial;
             const casoI = isNegative(parametroInicial)
             const getI = (short=false) => {
                 if(short){
@@ -88,6 +89,47 @@
                     } else {
                         squarerootContent += '<p class="aviso">Essa raiz já está simplificada</p>'
                         squarerootContent += '<p>√'+parametroInicial+' = '+squarerootResult.valorDecimalStr+'</p>'
+                    }
+
+                    
+                    // Explica pq raiz já está simplificada
+                    if(squarerootResult.resultadoFinalStr != '0' & squarerootResult.resultadoFinalStr != '1') {
+                        squarerootContent += '<p class="aviso">Tentativa (falha) de simplificar a raiz:</p>'
+
+                        // Fatoração
+                        squarerootContent += '<div class="fatoracao-table"><table>'
+                        let par = ''
+                        squarerootResult.fatoracao.dividendos.map((num, index) => {
+                            const arr = squarerootResult.fatoracao.divisores
+                            if(par == 'up'){
+                                par = 'down'
+                            } else {
+                                if(arr[index] == arr[index+1]){
+                                    par = 'up'
+                                } else {
+                                    par = ''
+                                }
+                            }
+
+                            squarerootContent += '<tr><td class="dividendo">'+squarerootResult.fatoracao.dividendos[index]+'</td><td class="divisor '+par+'">'+squarerootResult.fatoracao.divisores[index]+'</td></tr>'
+                        })
+                        squarerootContent += '<tr><td class="dividendo">1</td><td class="divisor"></td></tr>'
+                        squarerootContent += '</table></div>'
+
+                        // Separa os pares da fatoração em potências de 2 (nesse caso não vai haver potências de 2)
+                        squarerootContent += "<p>√("
+                        for(const num in squarerootResult.numerosDentroDaRaiz){
+                            squarerootContent += squarerootResult.numerosDentroDaRaiz[num]
+                            if(num < squarerootResult.numerosDentroDaRaiz.length-1){
+                                squarerootContent += " × "
+                            }
+                        }
+                        squarerootContent += ")" + getI()
+
+                        // Efetua as multiplicações
+                        if(squarerootResult.numerosForaDaRaiz.length + squarerootResult.numerosDentroDaRaiz.length > 1){
+                            squarerootContent += "<p>"+squarerootResult.resultadoFinalStr+getI(true)+"</p>"
+                        }
                     }
 
                 } else {
